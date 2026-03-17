@@ -27,7 +27,7 @@ html,body{margin:0;padding:0;background:#a7d07a;color:#1a1a1a;font-family:"Songt
 .fortune-title{font-size:20px;font-weight:700}
 .fortune-grade{font-size:18px;color:#f0801a}
 .fortune-text{padding:0 16px;text-align:center;color:#333}
-.tap-hint{position:absolute;left:50%;top:22%;transform:translateX(-50%);color:#78c263;padding:6px 10px;border-radius:10px;text-align:center;text-shadow:0 0 6px rgba(120,194,99,.6),0 0 10px rgba(120,194,99,.4)}
+.tap-hint{position:absolute;left:50%;top:calc(22% - 200px);transform:translateX(-50%);color:#78c263;padding:6px 10px;border-radius:10px;text-align:center}
 .tap-hint.hide{display:none}
 .draw-actions{display:none;gap:12px;justify-content:center;margin-top:12px}
 #drawActions.show{display:flex}
@@ -58,7 +58,7 @@ html,body{margin:0;padding:0;background:#a7d07a;color:#1a1a1a;font-family:"Songt
 .drawer.open{pointer-events:auto}
 .drawer-mask{position:absolute;inset:0;background:rgba(0,0,0,.15);opacity:0;transition:.2s}
 .drawer.open .drawer-mask{opacity:1}
-.drawer-panel{position:absolute;left:0;top:0;bottom:0;width:260px;transform:translateX(-100%);transition:.25s;background:rgba(255,255,255,.35);backdrop-filter:blur(12px);padding:56px 16px 8px;border-right:1px solid rgba(0,0,0,.25)}
+.drawer-panel{position:absolute;left:0;top:0;bottom:0;width:260px;transform:translateX(-100%);transition:.25s;background:rgba(255,255,255,.35);backdrop-filter:blur(12px);padding:64px 16px 8px;border-right:1px solid rgba(0,0,0,.25)}
 .drawer.open .drawer-panel{transform:translateX(0)}
 .drawer-link{display:block;width:100%;margin:0;padding:14px 6px;border:0;background:transparent;text-align:left;border-bottom:1px solid rgba(0,0,0,.25)}
 .drawer-link:last-child{border-bottom:none}
