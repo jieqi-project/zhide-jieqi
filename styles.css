@@ -1,9 +1,9 @@
 :root{--bg:#b7e08a;--panel:#f6e8cf;--card:#d7f2c7;--green:#66b34e;--dark:#2b2b2b;--muted:#999}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#a7d07a;color:#1a1a1a;font-family:"Songti SC","SimSun","Noto Serif SC",serif}
-.bg-gradient{position:fixed;inset:0;z-index:-1;background:
-  radial-gradient(1200px 700px at 15% 0%, rgba(207,231,183,.9) 0%, rgba(207,231,183,0) 55%),
-  radial-gradient(900px 600px at 85% 100%, rgba(234,247,220,.85) 0%, rgba(234,247,220,0) 60%),
+.bg-gradient{position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(1200px 700px at 20% 10%, rgba(207,231,183,.9) 0%, rgba(207,231,183,0) 55%),
+  radial-gradient(900px 600px at 80% 20%, rgba(234,247,220,.85) 0%, rgba(234,247,220,0) 60%),
   linear-gradient(180deg,#b7e08a 0%, #a7d07a 100%)}
 .app-header{padding:16px 12px;text-align:center}
 .brand{font-size:28px;font-weight:700;position:relative;top:2px}
@@ -29,28 +29,30 @@ html,body{margin:0;padding:0;background:#a7d07a;color:#1a1a1a;font-family:"Songt
 .fortune-title{font-size:20px;font-weight:700}
 .fortune-grade{font-size:18px;color:#f0801a}
 .fortune-text{padding:0 16px;text-align:center;color:#333}
-.tap-hint{position:absolute;left:50%;top:calc(22% - 20px + 120px);transform:translateX(-50%);color:#78c263;padding:6px 10px;border-radius:10px;text-align:center}
+.tap-hint{position:absolute;left:50%;top:calc(22% - 20px + 20px);transform:translateX(-50%);color:#78c263;padding:6px 10px;border-radius:10px;text-align:center}
 .tap-hint.hide{display:none}
 .draw-actions{display:none;gap:12px;justify-content:center;margin-top:12px}
 #drawActions.show{display:flex}
 .btn{border:0;border-radius:12px;background:#e6f4d7;padding:12px 16px;font-weight:600}
 .btn.primary{background:#98cf72}
-.collage-layout{display:flex;gap:8px}
+.collage-layout{display:flex;gap:8px;position:relative}
 .preview-wrap{position:relative;flex:1;background:rgba(255,255,255,.35);backdrop-filter:blur(12px);border-radius:18px;padding:8px;min-height:540px}
 #collageCanvas{width:100%;height:100%;border-radius:12px;background:#fff}
 .sticker-layer{position:absolute;left:8px;top:8px;right:8px;bottom:8px;overflow:hidden;border-radius:12px}
 .limit-tip{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);background:#66b34e;color:#fff;border-radius:10px;padding:6px 12px;display:none}
 .mode-tip{position:absolute;left:50%;bottom:48px;transform:translateX(-50%);background:rgba(255,255,255,.6);backdrop-filter:blur(8px);color:#2b2b2b;border-radius:10px;padding:6px 10px;display:none;border:1px solid rgba(255,255,255,.6)}
 .side-menu{width:120px;display:flex;flex-direction:column;gap:0;align-self:stretch;background:rgba(255,255,255,.35);backdrop-filter:blur(12px);border-radius:18px;padding:8px;border:1px solid rgba(255,255,255,.5)}
-.menu-btn{border:0;background:transparent;padding:14px 6px;font-size:13px;border-bottom:1px solid rgba(0,0,0,.15)}
+.menu-btn{position:relative;border:0;background:transparent;padding:14px 6px;font-size:13px;border-bottom:1px solid rgba(0,0,0,.15)}
 .menu-btn:last-child{border-bottom:none}
 .menu-btn.disabled{opacity:.5;pointer-events:none}
-.sticker-modal,.bg-modal{position:fixed;left:0;right:0;bottom:0;background:rgba(234,247,220,.8);backdrop-filter:blur(12px);border-top-left-radius:20px;border-top-right-radius:20px;box-shadow:0 -8px 16px rgba(0,0,0,.15)}
-.sticker-modal.hidden,.bg-modal.hidden{display:none}
+.menu-btn.active::after{content:"";position:absolute;left:8px;right:8px;bottom:-4px;height:10px;background:rgba(152,207,114,.6);filter:blur(6px);border-radius:12px}
+.picker-card{position:absolute;right:130px;top:24px;background:rgba(234,247,220,.85);backdrop-filter:blur(12px);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.6);opacity:0;transform:translateX(24px);pointer-events:none}
+.picker-card.show{opacity:1;transform:translateX(0);pointer-events:auto}
+.picker-card.hidden{display:none}
 .modal-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px}
 .modal-title{font-weight:700}
 .icon-btn{border:0;background:transparent;font-size:24px}
-.sticker-grid,.bg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:12px 16px}
+.sticker-grid,.bg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:12px 16px;overflow:auto}
 .sticker-grid img,.bg-grid img{width:100%;height:auto;border-radius:12px;background:#fff}
 .sticker{position:absolute;left:0;top:0;transform:translate(-50%,-50%);touch-action:none}
 .sticker.selected{outline:2px dashed #66b34e}
