@@ -9,6 +9,7 @@
   <link rel="preload" href="./assets/backgrounds/bg1.svg" as="image">
 </head>
 <body>
+  <div class="bg-gradient"></div>
   <div id="app">
     <header class="app-header">
       <button id="hamburger" class="hamburger-btn">☰</button>
@@ -17,7 +18,7 @@
     </header>
     <main class="view">
       <section id="view-draw" class="panel active">
-        <div class="draw-container glass">
+        <div class="draw-container glass soft">
           <div class="lottery-area" id="lotteryArea">
             <div class="lottery-tube">
               <svg viewBox="0 0 200 240" class="tube-svg">
@@ -33,7 +34,7 @@
               <div class="fortune-text" id="fortuneText"></div>
             </div>
           </div>
-          <div class="tap-hint" id="tapHint">轻触屏幕，摇一摇抽签桶抽签，可截图保存</div>
+          <div class="tap-hint" id="tapHint">轻触屏幕抽取节气签<br/>摇一摇抽签桶<br/>可截图保存结果</div>
           <div class="draw-actions" id="drawActions">
             <button id="btnRetry" class="btn">再来一次</button>
             <button id="btnAccept" class="btn primary">开心收下</button>
@@ -46,6 +47,7 @@
             <canvas id="collageCanvas" width="750" height="1000"></canvas>
             <div id="stickerLayer" class="sticker-layer"></div>
             <div class="limit-tip" id="limitTip"></div>
+            <div class="mode-tip" id="modeTip"></div>
           </div>
           <div class="side-menu soft">
             <button class="menu-btn" id="btnBg">底图</button>
