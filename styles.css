@@ -8,13 +8,15 @@ html,body{margin:0;padding:0;background:#a7d07a;color:#1a1a1a;font-family:"Songt
 .app-header{padding:16px 12px;text-align:center}
 .brand{font-size:28px;font-weight:700;position:relative;top:2px}
 .subtitle{font-size:16px;color:#2b7c2b}
-.view{width:clamp(320px,92vw,420px);margin:0 auto;padding-bottom:24px}
+.page{width:clamp(320px,92vw,420px);margin:0 auto;position:relative}
+.view{width:100%;margin:0 auto;padding-bottom:24px}
 .panel{display:none}
 .panel.active{display:block}
 .tabbar{display:none}
-.hamburger-btn{position:fixed;left:12px;top:12px;border:0;background:rgba(255,255,255,.6);backdrop-filter:blur(14px);border-radius:14px;padding:10px 12px;z-index:1000;box-shadow:0 6px 18px rgba(0,0,0,.18), inset 0 0 10px rgba(255,255,255,.8)}
+.hamburger-btn{position:absolute;left:12px;top:12px;border:0;background:rgba(255,255,255,.6);backdrop-filter:blur(14px);border-radius:14px;padding:10px 12px;z-index:1000;box-shadow:0 6px 18px rgba(0,0,0,.18), inset 0 0 10px rgba(255,255,255,.8)}
 .draw-container{padding:12px}
 .lottery-area{position:relative;height:520px;border-radius:18px;background:rgba(255,255,255,.35);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.draw-container.soft{border-radius:18px}
 .lottery-tube{position:absolute;bottom:40px;display:flex;align-items:center;justify-content:center;z-index:2}
 .tube-svg{width:200px;height:240px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.15))}
 .sticks{position:absolute;bottom:130px;width:120px;height:120px}
@@ -27,7 +29,7 @@ html,body{margin:0;padding:0;background:#a7d07a;color:#1a1a1a;font-family:"Songt
 .fortune-title{font-size:20px;font-weight:700}
 .fortune-grade{font-size:18px;color:#f0801a}
 .fortune-text{padding:0 16px;text-align:center;color:#333}
-.tap-hint{position:absolute;left:50%;top:calc(22% - 200px);transform:translateX(-50%);color:#78c263;padding:6px 10px;border-radius:10px;text-align:center}
+.tap-hint{position:absolute;left:50%;top:calc(22% - 20px + 180px);transform:translateX(-50%);color:#78c263;padding:6px 10px;border-radius:10px;text-align:center}
 .tap-hint.hide{display:none}
 .draw-actions{display:none;gap:12px;justify-content:center;margin-top:12px}
 #drawActions.show{display:flex}
@@ -65,4 +67,4 @@ html,body{margin:0;padding:0;background:#a7d07a;color:#1a1a1a;font-family:"Songt
 .glass{background:rgba(255,255,255,.35);backdrop-filter:blur(12px)}
 .soft{box-shadow:0 10px 30px rgba(0,0,0,.12);border:1px solid rgba(255,255,255,.5)}
 .info-page{padding:24px;border-radius:18px;margin:12px;background:rgba(255,255,255,.35);backdrop-filter:blur(12px);box-shadow:0 10px 30px rgba(0,0,0,.12);border:1px solid rgba(255,255,255,.5)}
-.watermark{position:fixed;right:8px;bottom:8px;font-size:12px;color:rgba(0,0,0,.6)}
+.watermark{position:absolute;right:8px;bottom:8px;font-size:12px;color:rgba(0,0,0,.6)}

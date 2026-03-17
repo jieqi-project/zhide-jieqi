@@ -11,12 +11,13 @@
 <body>
   <div class="bg-gradient"></div>
   <div id="app">
-    <header class="app-header">
-      <button id="hamburger" class="hamburger-btn">☰</button>
-      <div class="brand">志德岁时纪</div>
-      <div class="subtitle">节气上上签</div>
-    </header>
-    <main class="view">
+    <div class="page">
+      <header class="app-header">
+        <button id="hamburger" class="hamburger-btn">☰</button>
+        <div class="brand">志德岁时纪</div>
+        <div class="subtitle">节气上上签</div>
+      </header>
+      <main class="view">
       <section id="view-draw" class="panel active">
         <div class="draw-container glass soft">
           <div class="lottery-area" id="lotteryArea">
@@ -80,7 +81,9 @@
           <div class="info-text">即将上线，敬请期待</div>
         </div>
       </section>
-    </main>
+      </main>
+      <div class="watermark">@志德文创</div>
+    </div>
     <aside id="drawer" class="drawer">
       <div id="drawerMask" class="drawer-mask"></div>
       <div class="drawer-panel glass">
@@ -89,7 +92,6 @@
         <button class="drawer-link" id="navInfo">相关信息</button>
       </div>
     </aside>
-    <div class="watermark">@志德文创</div>
   </div>
   <script src="./app.js"></script>
 </body>
