@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>志德岁时纪·节气上上签</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="preload" href="./assets/stickers/sun.svg" as="image">
+  <link rel="preload" href="./assets/backgrounds/bg1.svg" as="image">
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <div class="brand">志德岁时纪</div>
+      <div class="subtitle">拼贴画廊</div>
+    </header>
+    <main class="view">
+      <section id="view-draw" class="panel active">
+        <div class="draw-container">
+          <div class="lottery-area">
+            <div class="lottery-tube">
+              <svg viewBox="0 0 200 240" class="tube-svg">
+                <ellipse cx="100" cy="50" rx="80" ry="30" fill="#6b4f2a"></ellipse>
+                <rect x="20" y="50" width="160" height="140" rx="20" fill="#5a3f1f"></rect>
+                <ellipse cx="100" cy="190" rx="80" ry="30" fill="#5a3f1f"></ellipse>
+              </svg>
+              <div class="sticks"></div>
+            </div>
+            <div class="fortune-card" id="fortuneCard">
+              <div class="fortune-title" id="fortuneTitle"></div>
+              <div class="fortune-grade" id="fortuneGrade"></div>
+              <div class="fortune-text" id="fortuneText"></div>
+            </div>
+          </div>
+          <div class="draw-actions">
+            <button id="btnShake" class="btn primary">摇一摇/抽取</button>
+            <button id="btnToCollage" class="btn">继续拼贴</button>
+          </div>
+        </div>
+      </section>
+      <section id="view-collage" class="panel">
+        <div class="collage-layout">
+          <div class="preview-wrap">
+            <canvas id="collageCanvas" width="750" height="1000"></canvas>
+            <div id="stickerLayer" class="sticker-layer"></div>
+            <div class="limit-tip" id="limitTip"></div>
+          </div>
+          <div class="side-menu">
+            <button class="menu-btn" id="btnBg">底图选择</button>
+            <button class="menu-btn" id="btnStickerSeason">贴纸分类(节气)</button>
+            <button class="menu-btn" id="btnStickerCampus">贴纸分类(书院)</button>
+            <button class="menu-btn" id="btnStickerText">贴纸分类(文字)</button>
+            <button class="menu-btn" id="btnSave">保存图片</button>
+            <button class="menu-btn" id="btnClear">清空画布</button>
+          </div>
+        </div>
+        <div class="sticker-modal hidden" id="stickerModal">
+          <div class="modal-header">
+            <div class="modal-title" id="modalTitle"></div>
+            <button class="icon-btn" id="modalClose">×</button>
+          </div>
+          <div class="sticker-grid" id="stickerGrid"></div>
+        </div>
+        <div class="bg-modal hidden" id="bgModal">
+          <div class="modal-header">
+            <div class="modal-title">选择底图</div>
+            <button class="icon-btn" id="bgClose">×</button>
+          </div>
+          <div class="bg-grid" id="bgGrid"></div>
+        </div>
+      </section>
+    </main>
+    <nav class="tabbar">
+      <button class="tab-btn active" data-target="view-draw">节气抽签</button>
+      <button class="tab-btn" data-target="view-collage">拼贴画廊</button>
+    </nav>
+  </div>
+  <script src="./app.js"></script>
+</body>
+</html>
