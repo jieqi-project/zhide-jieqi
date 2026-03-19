@@ -1,6 +1,8 @@
-:root{--bg:#b7e08a;--panel:#f6e8cf;--card:#d7f2c7;--green:#66b34e;--dark:#2b2b2b;--muted:#999}
+:root{--bg:#b7e08a;--panel:#f6e8cf;--card:#d7f2c7;--green:#66b34e;--dark:#2b2b2b;--muted:#666}
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;background:#a7d07a;color:#1a1a1a;font-family:"Songti SC","SimSun","Noto Serif SC",serif}
+html,body{margin:0;padding:0;background:#a7d07a;color:#1a1a1a;font-family:"Songti SC","SimSun","Noto Serif SC",serif;-webkit-tap-highlight-color:rgba(0,0,0,0)}
+a,a:visited,a:active{color:var(--muted);text-decoration:none}
+a:hover{color:var(--muted)}
 .bg-gradient{position:fixed;inset:0;z-index:-1;pointer-events:none;background:
   radial-gradient(1200px 700px at 20% 10%, rgba(207,231,183,.9) 0%, rgba(207,231,183,0) 55%),
   radial-gradient(900px 600px at 80% 20%, rgba(234,247,220,.85) 0%, rgba(234,247,220,0) 60%),
@@ -18,10 +20,9 @@ html,body{margin:0;padding:0;background:#a7d07a;color:#1a1a1a;font-family:"Songt
 .lottery-area{position:relative;height:520px;border-radius:18px;background:rgba(255,255,255,.35);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .draw-container.soft{border-radius:18px}
 .lottery-tube{position:absolute;bottom:40px;display:flex;align-items:center;justify-content:center;z-index:2}
-.tube-svg{width:200px;height:240px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.15))}
-.sticks{position:absolute;bottom:130px;width:120px;height:120px}
-.sticks::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,#1d1d1d 0 8px,transparent 8px 16px);transform-origin:bottom;opacity:.6}
-.shake-once::before{animation:shake1 1s ease-in-out 1}
+.tube-svg{width:200px;height:auto;filter:drop-shadow(0 4px 8px rgba(0,0,0,.15))}
+.sticks-img{position:absolute;bottom:168px;width:120px;height:auto;transform-origin:50% 100%;opacity:.9}
+.shake-once{animation:shake1 1s ease-in-out 1}
 @keyframes shake1{0%,100%{transform:rotate(0)}20%{transform:rotate(12deg)}40%{transform:rotate(-12deg)}60%{transform:rotate(8deg)}80%{transform:rotate(-8deg)}}
 .fortune-card{position:absolute;top:-320px;width:300px;height:420px;border-radius:16px;background:rgba(255,255,255,.75);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;box-shadow:0 10px 20px rgba(0,0,0,.15);opacity:0;z-index:1}
 .fortune-card.show{animation:dropIn 1s ease forwards}
@@ -70,3 +71,4 @@ html,body{margin:0;padding:0;background:#a7d07a;color:#1a1a1a;font-family:"Songt
 .soft{box-shadow:0 10px 30px rgba(0,0,0,.12);border:1px solid rgba(255,255,255,.5)}
 .info-page{padding:24px;border-radius:18px;margin:12px;background:rgba(255,255,255,.35);backdrop-filter:blur(12px);box-shadow:0 10px 30px rgba(0,0,0,.12);border:1px solid rgba(255,255,255,.5)}
 .watermark{position:fixed;right:8px;bottom:8px;font-size:12px;color:rgba(0,0,0,.6)}
+.z-logo{position:fixed;right:10px;top:10px;width:42px;height:auto;z-index:1200;pointer-events:none}
