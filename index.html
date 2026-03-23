@@ -45,16 +45,15 @@
             <canvas id="collageCanvas" width="750" height="1000"></canvas>
             <div id="stickerLayer" class="sticker-layer"></div>
             <div class="limit-tip" id="limitTip"></div>
-            <div class="mode-tip" id="modeTip"></div>
           </div>
+          <div class="side-ornament" aria-hidden="true"></div>
           <div class="side-menu soft">
             <button class="menu-btn" id="btnBg">底图</button>
             <button class="menu-btn" id="btnStickerNature">风物贴纸</button>
             <button class="menu-btn" id="btnStickerXiaSun">书院贴纸</button>
             <button class="menu-btn" id="btnStickerLayout">排版素材</button>
             <button class="menu-btn" id="btnClear">清空画布</button>
-            <button class="menu-btn" id="btnToggleMode">编辑模式</button>
-            <button class="menu-btn" id="btnSave">保存图片</button>
+            <button class="menu-btn save" id="btnSave"><span class="save-label">保存图片</span><img class="save-ico" src="./assets/ui/folder.svg" alt=""></button>
           </div>
         </div>
         <div class="picker-card hidden" id="stickerModal">
@@ -81,8 +80,7 @@
             部署与维护：魏紫陌<br>
             界面设计：张姝妍<br>
             摄影底图：干事<br>
-            贴纸素材：干事<br>
-            UI素材：干事<br>
+            贴纸素材：杨怡倩、王禹潼<br>
             宣传：干事
             <br><br>
             详情可见：（微信链接）
@@ -98,9 +96,9 @@
     <aside id="drawer" class="drawer">
       <div id="drawerMask" class="drawer-mask"></div>
       <div class="drawer-panel glass">
-        <button class="drawer-link" id="navDraw">节气抽签</button>
-        <button class="drawer-link" id="navCollage">拼贴画板</button>
-        <button class="drawer-link" id="navInfo">相关信息</button>
+        <button class="drawer-link" id="navDraw"><span class="drawer-label">节气抽签</span><img class="drawer-ico" src="./assets/ui/draw.svg" alt=""></button>
+        <button class="drawer-link" id="navCollage"><span class="drawer-label">拼贴画板</span><img class="drawer-ico" src="./assets/ui/board.svg" alt=""></button>
+        <button class="drawer-link" id="navInfo"><span class="drawer-label">相关信息</span><img class="drawer-ico" src="./assets/ui/info.svg" alt=""></button>
       </div>
     </aside>
   </div>

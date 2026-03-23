@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="160" viewBox="0 0 280 160" fill="none">
+  <!-- Elliptical, hand-drawn ink ring for sidebar selection -->
+  <defs>
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0.6"/>
+    </filter>
+  </defs>
+  <ellipse cx="140" cy="80" rx="108" ry="54" stroke="#F6E9B8" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <path d="M30 82c14-40 74-70 130-58 22 5 36 12 50 26" stroke="#FFF1B8" stroke-width="8" fill="none" stroke-linecap="round" filter="url(#blur)"/>
+  <path d="M46 106c18 22 56 38 102 26 24-6 42-18 54-34" stroke="#FFF7CC" stroke-width="7" fill="none" stroke-linecap="round" filter="url(#blur)"/>
+</svg>
