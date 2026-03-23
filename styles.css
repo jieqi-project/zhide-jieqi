@@ -38,12 +38,12 @@ button,.btn,.menu-btn{color:#2b2b2b !important}
 .btn.primary{background:#98cf72}
 .collage-layout{display:flex;gap:8px;position:relative}
 .preview-wrap{position:relative;flex:1;background:rgba(255,255,255,.35);backdrop-filter:blur(12px);border-radius:18px;padding:8px;min-height:540px}
-.side-ornament{position:absolute;right:0;top:8px;bottom:8px;width:120px;background:url("./assets/bamboo-background.svg") left 0.5px bottom 10px/160% auto no-repeat;opacity:.5;z-index:1;pointer-events:none}
+.side-ornament{position:absolute;right:0;top:8px;bottom:8px;width:120px;background:url("./assets/bamboo-background.svg") left 0.5px bottom 1px/160% auto no-repeat;opacity:.5;z-index:1;pointer-events:none}
 #collageCanvas{width:100%;height:100%;border-radius:12px;background:#fff}
 .sticker-layer{position:absolute;left:8px;top:8px;right:8px;bottom:8px;overflow:hidden;border-radius:12px}
 .limit-tip{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);background:#66b34e;color:#fff;border-radius:10px;padding:6px 12px;display:none}
 .mode-tip{position:absolute;left:50%;bottom:48px;transform:translateX(-50%);background:rgba(255,255,255,.6);backdrop-filter:blur(8px);color:#2b2b2b;border-radius:10px;padding:6px 10px;display:none;border:1px solid rgba(255,255,255,.6)}
-.side-menu{position:relative;z-index:2;width:120px;display:flex;flex-direction:column;gap:0;align-self:stretch;background:rgba(255,255,255,.28);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:18px;padding:8px;border:1px solid rgba(255,255,255,.5)}
+.side-menu{position:relative;z-index:10;width:120px;display:flex;flex-direction:column;gap:0;align-self:stretch;background:rgba(255,255,255,.28);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:18px;padding:8px;border:1px solid rgba(255,255,255,.5)}
 .menu-btn{position:relative;border:0;background:transparent;padding:14px 6px;font-size:13px;border-bottom:1px solid rgba(0,0,0,.15)}
 .menu-btn:last-child{border-bottom:none}
 .menu-btn.disabled{opacity:.5;pointer-events:none}
@@ -74,11 +74,11 @@ button,.btn,.menu-btn{color:#2b2b2b !important}
 .handles .corner.br{right:-7px;bottom:-7px;cursor:nwse-resize}
 .handles .rotate{left:50%;top:-28px;transform:translateX(-50%) scale(var(--inv,1));width:18px;height:18px;background:#ffd264 url(./assets/ui/rotate.svg) no-repeat center/12px 12px;cursor:grab;border:2px solid rgba(0,0,0,.15)}
 .handles .delete{left:50%;bottom:-28px;transform:translateX(-50%) scale(var(--inv,1));width:18px;height:18px;background:#d9d9d9 url(./assets/ui/trash.svg) no-repeat center/12px 12px;cursor:pointer;border:2px solid rgba(0,0,0,.15)}
-.drawer{position:fixed;inset:0;pointer-events:none}
+.drawer{position:fixed;inset:0;pointer-events:none;z-index:1000}
 .drawer.open{pointer-events:auto}
-.drawer-mask{position:absolute;inset:0;background:rgba(0,0,0,.15);opacity:0;transition:.2s}
+.drawer-mask{position:absolute;inset:0;background:rgba(0,0,0,.15);opacity:0;transition:.2s;z-index:1000}
 .drawer.open .drawer-mask{opacity:1}
-.drawer-panel{position:absolute;left:0;top:0;bottom:0;width:280px;transform:translateX(-100%);transition:.25s;background:rgba(255,255,255,.28);backdrop-filter:blur(14px);padding:64px 16px;border-right:1px solid rgba(0,0,0,.18);z-index:20}
+.drawer-panel{position:absolute;left:0;top:0;bottom:0;width:250px;transform:translateX(-100%);transition:.25s;background:rgba(255,255,255,.28);backdrop-filter:blur(14px);padding:64px 16px;border-right:1px solid rgba(0,0,0,.18);z-index:1001}
 .drawer.open .drawer-panel{transform:translateX(0)}
 .drawer-link{position:relative;display:flex;align-items:center;justify-content:space-between;width:100%;margin:12px 0;padding:20px 16px;border:1px solid rgba(255,255,255,.5);background:linear-gradient(180deg,rgba(30,111,62,.9) 0%, rgba(110,209,123,.85) 100%);color:#fff !important;text-align:left;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.12);font-size:20px;font-weight:700;letter-spacing:.02em;font-family:"Songti SC","SimSun","Noto Serif SC",serif;min-height:74px}
 .drawer-ico{position:absolute;right:-10px;top:50%;transform:translateY(-50%);width:64px;height:64px;opacity:.28;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.12))}
@@ -89,4 +89,4 @@ button,.btn,.menu-btn{color:#2b2b2b !important}
 .soft{box-shadow:0 10px 30px rgba(0,0,0,.12);border:1px solid rgba(255,255,255,.5)}
 .info-page{padding:24px;border-radius:18px;margin:12px;background:rgba(255,255,255,.35);backdrop-filter:blur(12px);box-shadow:0 10px 30px rgba(0,0,0,.12);border:1px solid rgba(255,255,255,.5)}
 .watermark{position:fixed;right:8px;bottom:8px;font-size:12px;color:rgba(0,0,0,.6)}
-.z-logo{position:fixed;right:-42px;top:-42px;width:168px;height:auto;z-index:10;pointer-events:none;filter:none;box-shadow:none;opacity:.3}
+.z-logo{position:fixed;right:-42px;top:-42px;width:168px;height:auto;z-index:1;pointer-events:none;filter:none;box-shadow:none;opacity:.3}
