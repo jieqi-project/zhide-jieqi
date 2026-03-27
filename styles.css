@@ -40,12 +40,16 @@ button,.btn,.menu-btn{color:#2b2b2b !important}
 .collage-layout{display:flex;gap:8px;position:relative}
 .preview-wrap{position:relative;flex:1;background:rgba(255,255,255,.35);backdrop-filter:blur(12px);border-radius:18px;padding:8px;min-height:540px}
 .side-ornament{position:absolute;right:0;top:8px;bottom:8px;width:120px;background:url("./assets/bamboo-background.svg") left 0.5px bottom 1px/160% auto no-repeat;opacity:.5;z-index:1;pointer-events:none}
+.side-ornament::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(140px 260px at 40% 30%, rgba(255,255,255,.6) 0%, rgba(255,255,255,0) 60%),
+  radial-gradient(120px 220px at 70% 65%, rgba(255,255,255,.45) 0%, rgba(255,255,255,0) 65%);
+filter:blur(8px);opacity:.6;pointer-events:none}
 #collageCanvas{width:100%;height:100%;border-radius:12px;background:#fff}
 .bg-preview{position:absolute;left:8px;top:8px;right:8px;bottom:8px;width:calc(100% - 16px);height:calc(100% - 16px);border-radius:12px;object-fit:fill;image-rendering:auto;filter:none;z-index:0}
 .sticker-layer{position:absolute;left:8px;top:8px;right:8px;bottom:8px;overflow:hidden;border-radius:12px}
 .limit-tip{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);background:#66b34e;color:#fff;border-radius:10px;padding:6px 12px;display:none}
 .mode-tip{position:absolute;left:50%;bottom:48px;transform:translateX(-50%);background:rgba(255,255,255,.6);backdrop-filter:blur(8px);color:#2b2b2b;border-radius:10px;padding:6px 10px;display:none;border:1px solid rgba(255,255,255,.6)}
-.side-menu{position:relative;z-index:10;width:120px;display:flex;flex-direction:column;gap:0;align-self:stretch;background:rgba(255,255,255,.28);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:18px;padding:8px;border:1px solid rgba(255,255,255,.5)}
+.side-menu{position:relative;z-index:10;width:120px;display:flex;flex-direction:column;gap:0;align-self:stretch;background:rgba(255,255,255,.28);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);border-radius:18px;padding:8px;border:1px solid rgba(255,255,255,.5)}
 .menu-btn{position:relative;border:0;background:transparent;padding:14px 6px;font-size:13px;border-bottom:1px solid rgba(0,0,0,.15)}
 .menu-btn:last-child{border-bottom:none}
 .menu-btn.disabled{opacity:.5;pointer-events:none}
