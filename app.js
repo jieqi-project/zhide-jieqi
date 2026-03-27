@@ -14,7 +14,18 @@ function clearSelections(){state.items.forEach(it=>{it.el.classList.remove("sele
 function listSeq(prefix,start=1,end=12){const arr=[];for(let i=start;i<=end;i++){arr.push(`./assets/stickers/${prefix}-${i}.svg`)}return arr}
 function listByLegacy(prefix,max=12){const arr=[];for(let i=0;i<=max;i++){arr.push(`./assets/stickers/${prefix}${i===0?"":`-${i}`}.svg`)}return arr}
 function render(){const w=canvas.width;const h=canvas.height;ctx.setTransform(1,0,0,1,0,0);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";ctx.clearRect(0,0,w,h);if(state.bg){bgPreview.src=bust(state.bg)}}
-function fitCanvas(){const wrap=document.querySelector(".preview-wrap");const w=wrap.clientWidth-16;const r=1280/720;const h=w*r;const dpr=window.devicePixelRatio||1;canvas.style.width=w+"px";canvas.style.height=h+"px";canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);render()}
+function fitCanvas(){
+  const wrap=document.querySelector(".preview-wrap");
+  const w=wrap.clientWidth-16;
+  const r=1280/720;
+  let h=wrap.clientHeight?wrap.clientHeight-16:w*r;
+  const dpr=window.devicePixelRatio||1;
+  canvas.style.width=w+"px";
+  canvas.style.height=h+"px";
+  canvas.width=Math.round(w*dpr);
+  canvas.height=Math.round(h*dpr);
+  render()
+}
 window.addEventListener("resize",fitCanvas);fitCanvas();
 function setActiveButton(btn){[btnBg,btnStickerNature,btnStickerXiaSun,btnStickerLayout,btnClear,btnSave].forEach(b=>b.classList.remove("active"));btn.classList.add("active")}
 function clearActiveButtons(){[btnBg,btnStickerNature,btnStickerXiaSun,btnStickerLayout,btnClear,btnSave].forEach(b=>b.classList.remove("active"))}
@@ -36,7 +47,16 @@ function endHandle(){draggingHandle=null;document.removeEventListener("mousemove
 function deleteItem(){if(item.el.parentNode===stickerLayer){stickerLayer.removeChild(item.el)}state.items=state.items.filter(i=>i!==item);document.removeEventListener("mousemove",moveMouse);document.removeEventListener("mouseup",endMouse);item.el.removeEventListener("touchstart",startTouch);item.el.removeEventListener("touchmove",moveTouch);item.el.removeEventListener("touchend",endTouch);item.el.removeEventListener("mousedown",startMouse);updateStickerControls()}
 function startTouch(e){e.preventDefault();sel(true);touches=[...e.touches];item.dragging=true}
 function moveTouch(e){e.preventDefault();const ts=[...e.touches];if(touches.length===1&&ts.length===1){const dx=ts[0].clientX-touches[0].clientX;const dy=ts[0].clientY-touches[0].clientY;item.x+=dx;item.y+=dy;touches=ts;apply()}else if(touches.length>=2&&ts.length>=2){const d0=Math.hypot(touches[0].clientX-touches[1].clientX,touches[0].clientY-touches[1].clientY);const d1=Math.hypot(ts[0].clientX-ts[1].clientX,ts[0].clientY-ts[1].clientY);const s=d1/d0;item.scale=Math.max(0.3,Math.min(3,item.scale*s));const a0=Math.atan2(touches[0].clientY-touches[1].clientY,touches[0].clientX-touches[1].clientX);const a1=Math.atan2(ts[0].clientY-ts[1].clientY,ts[0].clientX-ts[1].clientX);item.rot+=a1-a0;touches=ts;apply()}}
-function outOfBounds(){const rect=stickerLayer.getBoundingClientRect();return item.x<0||item.y<0||item.x>rect.width||item.y>rect.height}
+function outOfBounds(){
+  const layerRect=stickerLayer.getBoundingClientRect();
+  const elRect=item.el.getBoundingClientRect();
+  const w=elRect.width;
+  const h=elRect.height;
+  const r=Math.hypot(w/2,h/2);
+  const x=item.x;
+  const y=item.y;
+  return (x+r<=0)||(y+r<=0)||(x-r>=layerRect.width)||(y-r>=layerRect.height)
+}
 function endTouch(e){const now=Date.now();if(now-item.lastTap<300){toggleRemove()}item.lastTap=now;touches=[...e.touches];if(touches.length===0){item.dragging=false;sel(false);if(outOfBounds()){deleteItem()}}}
 function startMouse(e){if(e.target&&e.target.closest(".handle"))return;e.preventDefault();sel(true);item.dragging=true;moved=false;if(!handles)addHandles();item._mx=e.clientX;item._my=e.clientY}
 function moveMouse(e){if(!item.dragging)return;const dx=e.clientX-item._mx;const dy=e.clientY-item._my;if(Math.abs(dx)>2||Math.abs(dy)>2)moved=true;item.x+=dx;item.y+=dy;item._mx=e.clientX;item._my=e.clientY;apply()}
