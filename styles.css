@@ -99,7 +99,11 @@ filter:blur(8px);opacity:.6;pointer-events:none}
 
 @media (max-width:520px){
   .preview-wrap{aspect-ratio:9/16;min-height:0}
+  .handles .rotate, .handles .delete{display:none !important}
 }
+
+.is-touch .handles .rotate,
+.is-touch .handles .delete{display:none !important}
 
 @media (hover:none) and (pointer:coarse){
   .handles .rotate,

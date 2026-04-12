@@ -10,6 +10,8 @@ let canTapToDraw=true;function onAreaTap(){if(!canTapToDraw)return;canTapToDraw=
 if(window.DeviceMotionEvent){let last=0;window.addEventListener("devicemotion",e=>{if(!canTapToDraw)return;const a=e.accelerationIncludingGravity;if(!a)return;const mag=Math.abs(a.x)+Math.abs(a.y)+Math.abs(a.z);const now=Date.now();if(mag>30&&now-last>1500){last=now;canTapToDraw=false;playShakeThenDraw()}},false)}
 const canvas=document.getElementById("collageCanvas");const ctx=canvas.getContext("2d");const stickerLayer=document.getElementById("stickerLayer");const limitTip=document.getElementById("limitTip");const btnBg=document.getElementById("btnBg");const btnStickerNature=document.getElementById("btnStickerNature");const btnStickerXiaSun=document.getElementById("btnStickerXiaSun");const btnStickerLayout=document.getElementById("btnStickerLayout");const btnSave=document.getElementById("btnSave");const btnClear=document.getElementById("btnClear");const bgModal=document.getElementById("bgModal");const bgGrid=document.getElementById("bgGrid");const bgClose=document.getElementById("bgClose");const stickerModal=document.getElementById("stickerModal");const stickerGrid=document.getElementById("stickerGrid");const modalTitle=document.getElementById("modalTitle");const modalClose=document.getElementById("modalClose");const drawActions=document.getElementById("drawActions");const previewWrap=document.querySelector(".preview-wrap");const collageLayout=document.querySelector(".collage-layout");const sideMenu=document.querySelector(".side-menu");const bgPreview=document.getElementById("bgPreview");
 const backgrounds=["./assets/backgrounds/bg1.jpg","./assets/backgrounds/bg2.jpg","./assets/backgrounds/bg3.jpg","./assets/backgrounds/bg4.jpg"];const MAX_STICKERS=10;const CACHE_TAG=Date.now();const bust=u=>u+(u.includes("?")?"&":"?")+"v="+CACHE_TAG;let state={bg:backgrounds[0],items:[]};
+if('ontouchstart' in window || navigator.maxTouchPoints > 0) document.body.classList.add('is-touch');
+
 function clearSelections(){state.items.forEach(it=>{it.el.classList.remove("selected");const h=it.el.querySelector(".handles");if(h)h.style.display="none"})}
 function listSeq(prefix,start=1,end=12){const arr=[];for(let i=start;i<=end;i++){arr.push(`./assets/stickers/${prefix}-${i}.svg`)}return arr}
 function listByLegacy(prefix,max=12){const arr=[];for(let i=0;i<=max;i++){arr.push(`./assets/stickers/${prefix}${i===0?"":`-${i}`}.svg`)}return arr}
@@ -30,10 +32,56 @@ window.addEventListener("resize",fitCanvas);fitCanvas();
 function setActiveButton(btn){[btnBg,btnStickerNature,btnStickerXiaSun,btnStickerLayout,btnClear,btnSave].forEach(b=>b.classList.remove("active"));btn.classList.add("active")}
 function clearActiveButtons(){[btnBg,btnStickerNature,btnStickerXiaSun,btnStickerLayout,btnClear,btnSave].forEach(b=>b.classList.remove("active"))}
 function sizePicker(card, anchorBtn){const w=previewWrap.clientWidth;const h=Math.max(260,Math.min(previewWrap.clientHeight-40, Math.round(previewWrap.clientHeight*0.72)));card.style.width=w+"px";card.style.height=h+"px";const anchor=anchorBtn||btnStickerNature;const btnTop=anchor.getBoundingClientRect().top;const containerTop=collageLayout.getBoundingClientRect().top;const top=Math.max(12,btnTop-containerTop);card.style.top=top+"px"}
-function openBg(){setActiveButton(btnBg);sizePicker(bgModal,btnStickerNature);bgModal.classList.remove("hidden");bgModal.classList.add("show");bgGrid.innerHTML="";backgrounds.forEach(src=>{const img=document.createElement("img");img.src=bust(src);img.addEventListener("click",()=>{state.bg=src;bgModal.classList.remove("show");bgModal.classList.add("hidden");clearActiveButtons();render()});bgGrid.appendChild(img)})}
+function openBg(){
+  setActiveButton(btnBg);
+  if(!stickerModal.classList.contains("hidden")){stickerModal.classList.remove("show");stickerModal.classList.add("hidden")}
+  sizePicker(bgModal,btnStickerNature);
+  bgModal.classList.remove("hidden");
+  bgModal.classList.add("show");
+  bgGrid.innerHTML="";
+  backgrounds.forEach(src=>{
+    const img=document.createElement("img");
+    img.src=bust(src);
+    img.addEventListener("click",()=>{
+      state.bg=src;
+      bgModal.classList.remove("show");
+      bgModal.classList.add("hidden");
+      clearActiveButtons();
+      render()
+    });
+    bgGrid.appendChild(img)
+  })
+}
 btnBg.addEventListener("click",openBg);bgClose.addEventListener("click",()=>{bgModal.classList.remove("show");bgModal.classList.add("hidden");clearActiveButtons()});
 function updateStickerControls(){const disabled=state.items.length>=MAX_STICKERS;const msg=`贴纸超过${MAX_STICKERS}个，不能再加了`;btnStickerNature.classList.toggle("disabled",disabled);btnStickerXiaSun.classList.toggle("disabled",disabled);btnStickerLayout.classList.toggle("disabled",disabled);if(disabled){limitTip.textContent=msg;limitTip.style.display="block";setTimeout(()=>{limitTip.style.display="none"},1800)}}
-function openSticker(cat){if(state.items.length>=MAX_STICKERS){updateStickerControls();return}const anchor=cat==="风物"?btnStickerNature:cat==="书院"?btnStickerXiaSun:btnStickerLayout;setActiveButton(anchor);sizePicker(stickerModal,btnStickerNature);stickerModal.classList.remove("hidden");stickerModal.classList.add("show");const titleMap={ "风物":"风物贴纸","书院":"书院贴纸","排版":"排版素材" };modalTitle.textContent=titleMap[cat]||cat;stickerGrid.innerHTML="";let list=[];if(cat==="书院"){list=list.concat(listSeq("campus",1,12),listByLegacy("campus-name",12))}if(cat==="风物"){list=list.concat(listSeq("jieqi",1,12),listByLegacy("jieqi-name",12))}if(cat==="排版"){list=list.concat(listSeq("text",1,12),listByLegacy("text-name",12))}list.forEach(src=>{const img=document.createElement("img");img.src=src;img.addEventListener("error",()=>img.remove());img.addEventListener("click",()=>{addSticker(src);stickerModal.classList.remove("show");stickerModal.classList.add("hidden");clearActiveButtons()});stickerGrid.appendChild(img)})}
+function openSticker(cat){
+  if(state.items.length>=MAX_STICKERS){updateStickerControls();return}
+  const anchor=cat==="风物"?btnStickerNature:cat==="书院"?btnStickerXiaSun:btnStickerLayout;
+  setActiveButton(anchor);
+  if(!bgModal.classList.contains("hidden")){bgModal.classList.remove("show");bgModal.classList.add("hidden")}
+  sizePicker(stickerModal,btnStickerNature);
+  stickerModal.classList.remove("hidden");
+  stickerModal.classList.add("show");
+  const titleMap={ "风物":"风物贴纸","书院":"书院贴纸","排版":"排版素材" };
+  modalTitle.textContent=titleMap[cat]||cat;
+  stickerGrid.innerHTML="";
+  let list=[];
+  if(cat==="书院"){list=list.concat(listSeq("campus",1,12),listByLegacy("campus-name",12))}
+  if(cat==="风物"){list=list.concat(listSeq("jieqi",1,12),listByLegacy("jieqi-name",12))}
+  if(cat==="排版"){list=list.concat(listSeq("text",1,12),listByLegacy("text-name",12))}
+  list.forEach(src=>{
+    const img=document.createElement("img");
+    img.src=src;
+    img.addEventListener("error",()=>img.remove());
+    img.addEventListener("click",()=>{
+      addSticker(src);
+      stickerModal.classList.remove("show");
+      stickerModal.classList.add("hidden");
+      clearActiveButtons()
+    });
+    stickerGrid.appendChild(img)
+  })
+}
 btnStickerNature.addEventListener("click",()=>openSticker("风物"));btnStickerXiaSun.addEventListener("click",()=>openSticker("书院"));btnStickerLayout.addEventListener("click",()=>openSticker("排版"));modalClose.addEventListener("click",()=>{stickerModal.classList.remove("show");stickerModal.classList.add("hidden");clearActiveButtons()});
 function addSticker(src){const wrap=document.createElement("div");wrap.className="sticker";wrap.style.width="120px";const img=document.createElement("img");img.src=bust(src);img.className="sticker-img";wrap.appendChild(img);const rect=stickerLayer.getBoundingClientRect();const cx=rect.width/2;const cy=rect.height/2;const jitterX=(Math.random()-0.5)*rect.width*0.1;const jitterY=(Math.random()-0.5)*rect.height*0.1;const item={el:wrap,src,x:cx+jitterX,y:cy+jitterY,scale:1,rot:0,lastTap:0,dragging:false};stickerLayer.appendChild(wrap);state.items.push(item);gesture(item);updateStickerControls()}
 function gesture(item){let touches=[];let handles=null;let draggingHandle=null;let startScale=1,startDist=1,startRot=0,startAngle=0;let moved=false;function sel(s){if(s){clearSelections();item.el.classList.add("selected");addHandles()}else{item.el.classList.remove("selected");removeHandles()}}function apply(){item.el.style.transform=`translate(${item.x}px,${item.y}px) rotate(${item.rot}rad) scale(${item.scale}) translate(-50%,-50%)`;if(handles)handles.style.setProperty("--inv",String(1/item.scale))}function ensureRemove(){}function toggleRemove(){}
