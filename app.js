@@ -9,7 +9,14 @@ function drawFortune(){const img=document.getElementById("fortuneImg");const src
 let canTapToDraw=true;function onAreaTap(){if(!canTapToDraw)return;canTapToDraw=false;playShakeThenDraw()}document.getElementById("lotteryArea").addEventListener("click",onAreaTap);btnRetry.addEventListener("click",()=>{fortuneCard.classList.remove("show");setTimeout(playShakeThenDraw,50)});btnAccept.addEventListener("click",()=>{showPanel("view-collage")});
 if(window.DeviceMotionEvent){let last=0;window.addEventListener("devicemotion",e=>{if(!canTapToDraw)return;const a=e.accelerationIncludingGravity;if(!a)return;const mag=Math.abs(a.x)+Math.abs(a.y)+Math.abs(a.z);const now=Date.now();if(mag>30&&now-last>1500){last=now;canTapToDraw=false;playShakeThenDraw()}},false)}
 const canvas=document.getElementById("collageCanvas");const ctx=canvas.getContext("2d");const stickerLayer=document.getElementById("stickerLayer");const limitTip=document.getElementById("limitTip");const btnBg=document.getElementById("btnBg");const btnStickerNature=document.getElementById("btnStickerNature");const btnStickerXiaSun=document.getElementById("btnStickerXiaSun");const btnStickerLayout=document.getElementById("btnStickerLayout");const btnSave=document.getElementById("btnSave");const btnClear=document.getElementById("btnClear");const bgModal=document.getElementById("bgModal");const bgGrid=document.getElementById("bgGrid");const bgClose=document.getElementById("bgClose");const stickerModal=document.getElementById("stickerModal");const stickerGrid=document.getElementById("stickerGrid");const modalTitle=document.getElementById("modalTitle");const modalClose=document.getElementById("modalClose");const drawActions=document.getElementById("drawActions");const previewWrap=document.querySelector(".preview-wrap");const collageLayout=document.querySelector(".collage-layout");const sideMenu=document.querySelector(".side-menu");const bgPreview=document.getElementById("bgPreview");
-const backgrounds=["./assets/backgrounds/bg1.jpg","./assets/backgrounds/bg2.jpg","./assets/backgrounds/bg3.jpg","./assets/backgrounds/bg4.jpg"];const MAX_STICKERS=10;const CACHE_TAG=Date.now();const bust=u=>u+(u.includes("?")?"&":"?")+"v="+CACHE_TAG;let state={bg:backgrounds[0],items:[]};
+const backgrounds=[
+"./assets/backgrounds/bg1.jpg",
+"./assets/backgrounds/bg2.jpg",
+"./assets/backgrounds/bg3.jpg",
+"./assets/backgrounds/bg4.jpg",
+"./assets/backgrounds/bg5.jpg",
+"./assets/backgrounds/bg6.jpg"
+];const MAX_STICKERS=10;const CACHE_TAG=Date.now();const bust=u=>u+(u.includes("?")?"&":"?")+"v="+CACHE_TAG;let state={bg:backgrounds[0],items:[]};
 if('ontouchstart' in window || navigator.maxTouchPoints > 0) document.body.classList.add('is-touch');
 
 function clearSelections(){state.items.forEach(it=>{it.el.classList.remove("selected");const h=it.el.querySelector(".handles");if(h)h.style.display="none"})}
