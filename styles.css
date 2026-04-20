@@ -59,18 +59,29 @@ filter:blur(8px);opacity:.6;pointer-events:none}
 .menu-btn.save{display:flex;align-items:center;justify-content:space-between;overflow:hidden}
 .menu-btn .save-ico{position:absolute;right:-8px;top:50%;transform:translateY(-50%);width:56px;height:56px;opacity:.28;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.12))}
 .menu-btn .save-label{z-index:1}
-.picker-card{position:absolute;right:130px;top:24px;background:rgba(234,247,220,.85);backdrop-filter:blur(12px);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.6);opacity:0;transform:translateX(24px);pointer-events:none}
+.picker-card{position:absolute;right:130px;top:24px;background:rgba(234,247,220,.85);backdrop-filter:blur(12px);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.6);opacity:0;transform:translateX(24px);pointer-events:none;display:flex;flex-direction:column;overflow:hidden}
 .picker-card.show{opacity:1;transform:translateX(0);pointer-events:auto}
 .picker-card.hidden{display:none}
+.text-modal{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center}
+.text-modal.hidden{display:none}
+.text-modal-mask{position:absolute;inset:0;background:rgba(0,0,0,.35)}
+.text-modal-card{position:relative;width:min(92vw,380px);background:rgba(255,255,255,.82);backdrop-filter:blur(10px);border-radius:18px;border:1px solid rgba(255,255,255,.65);box-shadow:0 14px 34px rgba(0,0,0,.18);padding:14px}
+.text-input{width:100%;min-height:140px;resize:none;border-radius:14px;border:1px solid rgba(0,0,0,.12);background:rgba(255,255,255,.35);padding:12px 12px;font-family:"Songti SC","SimSun","Noto Serif SC",serif;font-size:20px;line-height:1.35;color:#1e5e35;outline:none;transition:background .15s,color .15s,border-color .15s;text-align:center}
+.text-input.light{background:#a7d07a;color:#fff;border-color:rgba(0,0,0,.06)}
+.text-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
 .modal-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px}
 .modal-title{font-weight:700}
 .icon-btn{border:0;background:transparent;font-size:24px}
-.sticker-grid,.bg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:12px 16px;overflow:auto}
+.modal-header{flex:0 0 auto}
+.sticker-grid,.bg-grid{flex:1 1 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:12px 16px;overflow:auto;align-content:start}
 .sticker-grid img{width:100%;height:auto;border-radius:12px;background:#fff}
 .bg-grid img{width:100%;border-radius:12px;background:#fff;aspect-ratio:3/4;object-fit:cover}
 .sticker{position:absolute;left:0;top:0;transform:translate(-50%,-50%);touch-action:none;width:120px;display:inline-block;box-sizing:content-box;overflow:visible}
 .sticker img{width:100%;height:auto;display:block;position:relative;z-index:1}
 .sticker.selected{outline:2px dashed #66b34e}
+.text-sticker{width:220px}
+.text-sticker .text-inner{width:100%;min-height:56px;padding:12px 14px;border-radius:14px;font-family:"Songti SC","SimSun","Noto Serif SC",serif;font-size:22px;line-height:1.25;color:#1e5e35;display:flex;align-items:center;justify-content:center;white-space:pre-wrap;word-break:break-word;background:transparent}
+.text-sticker.light .text-inner{background:#a7d07a;color:#fff}
 .sticker .remove{position:absolute;right:-10px;top:-10px;background:#f05454;color:#fff;border-radius:50%;border:0;width:24px;height:24px;display:none}
 .sticker.show-remove .remove{display:block}
 .handles{position:absolute;left:0;top:0;right:0;bottom:0;pointer-events:none;z-index:10}

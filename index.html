@@ -55,6 +55,7 @@
             <button class="menu-btn" id="btnStickerNature">风物贴纸</button>
             <button class="menu-btn" id="btnStickerXiaSun">书院贴纸</button>
             <button class="menu-btn" id="btnStickerLayout">排版素材</button>
+            <button class="menu-btn" id="btnText">添加文字</button>
             <button class="menu-btn" id="btnClear">清空画布</button>
             <button class="menu-btn save" id="btnSave"><span class="save-label">保存图片</span><img class="save-ico" src="./assets/ui/folder.svg" alt=""></button>
           </div>
@@ -72,6 +73,17 @@
             <button class="icon-btn" id="bgClose">×</button>
           </div>
           <div class="bg-grid" id="bgGrid"></div>
+        </div>
+        <div class="text-modal hidden" id="textModal" aria-hidden="true">
+          <div class="text-modal-mask" id="textMask"></div>
+          <div class="text-modal-card">
+            <textarea id="textInput" class="text-input" placeholder="点击输入文字"></textarea>
+            <div class="text-actions">
+              <button class="btn" id="textRand">随机</button>
+              <button class="btn" id="textToggle">切换底色</button>
+              <button class="btn primary" id="textOk">确认</button>
+            </div>
+          </div>
         </div>
       </section>
       <section id="view-info" class="panel">
