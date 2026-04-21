@@ -116,6 +116,8 @@ filter:blur(8px);opacity:.6;pointer-events:none}
 
 @media (max-width:520px){
   .preview-wrap{aspect-ratio:9/16;min-height:0}
+  .text-modal-card.export-card{width:88vw;max-height:78vh}
+  .export-img{max-height:60vh}
   .handles .rotate, .handles .delete{display:none !important}
 }
 
