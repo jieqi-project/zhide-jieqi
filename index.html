@@ -85,6 +85,17 @@
             </div>
           </div>
         </div>
+        <div class="text-modal hidden" id="exportModal" aria-hidden="true">
+          <div class="text-modal-mask" id="exportMask"></div>
+          <div class="text-modal-card export-card">
+            <div class="export-hint">长按图片保存；或点击下方“下载 JPG”</div>
+            <img id="exportImg" class="export-img" alt="导出图片">
+            <div class="export-actions">
+              <a class="btn" id="exportOpen" rel="noopener">下载 JPG</a>
+              <button class="btn primary" id="exportClose">关闭</button>
+            </div>
+          </div>
+        </div>
       </section>
       <section id="view-info" class="panel">
         <div class="info-page glass">
