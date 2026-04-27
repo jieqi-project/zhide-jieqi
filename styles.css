@@ -69,11 +69,11 @@ filter:blur(8px);opacity:.6;pointer-events:none}
 .text-input{width:100%;min-height:140px;resize:none;border-radius:14px;border:1px solid rgba(0,0,0,.12);background:rgba(255,255,255,.35);padding:12px 12px;font-family:"Songti SC","SimSun","Noto Serif SC",serif;font-size:20px;line-height:1.35;color:#1e5e35;outline:none;transition:background .15s,color .15s,border-color .15s;text-align:center}
 .text-input.light{background:#a7d07a;color:#fff;border-color:rgba(0,0,0,.06)}
 .text-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
-.text-modal-card.export-card{padding:0;overflow:auto;max-height:92vh}
+.text-modal-card.export-card{padding:0;display:flex;flex-direction:column;max-height:92vh}
 .export-card{display:flex;flex-direction:column}
-.export-hint{text-align:center;color:rgba(0,0,0,.72);font-size:14px;padding:10px 14px 6px}
-.export-img{display:block;width:100%;height:auto;object-fit:contain;border-radius:0;background:transparent}
-.export-actions{display:flex;gap:10px;justify-content:flex-end;padding:8px 14px 12px}
+.export-hint{flex:0 0 auto;text-align:center;color:rgba(0,0,0,.72);font-size:14px;padding:10px 14px 6px}
+.export-img{flex:1 1 auto;display:block;width:100%;height:auto;max-height:70vh;object-fit:contain;background:transparent}
+.export-actions{flex:0 0 auto;display:flex;gap:10px;justify-content:flex-end;padding:8px 14px 12px}
 .modal-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px}
 .modal-title{font-weight:700}
 .icon-btn{border:0;background:transparent;font-size:24px}
@@ -116,8 +116,8 @@ filter:blur(8px);opacity:.6;pointer-events:none}
 
 @media (max-width:520px){
   .preview-wrap{aspect-ratio:9/16;min-height:0}
-  .text-modal-card.export-card{width:88vw;max-height:78vh}
-  .export-img{max-height:60vh}
+  .text-modal-card.export-card{width:92vw;max-height:88vh}
+  .export-img{max-height:65vh}
   .handles .rotate, .handles .delete{display:none !important}
 }
 

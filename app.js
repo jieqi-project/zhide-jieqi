@@ -10,27 +10,50 @@ let canTapToDraw=true;function onAreaTap(){if(!canTapToDraw)return;canTapToDraw=
 if(window.DeviceMotionEvent){let last=0;window.addEventListener("devicemotion",e=>{if(!canTapToDraw)return;const a=e.accelerationIncludingGravity;if(!a)return;const mag=Math.abs(a.x)+Math.abs(a.y)+Math.abs(a.z);const now=Date.now();if(mag>30&&now-last>1500){last=now;canTapToDraw=false;playShakeThenDraw()}},false)}
 const canvas=document.getElementById("collageCanvas");const ctx=canvas.getContext("2d");const stickerLayer=document.getElementById("stickerLayer");const limitTip=document.getElementById("limitTip");const btnBg=document.getElementById("btnBg");const btnStickerNature=document.getElementById("btnStickerNature");const btnStickerXiaSun=document.getElementById("btnStickerXiaSun");const btnStickerLayout=document.getElementById("btnStickerLayout");const btnText=document.getElementById("btnText");const btnSave=document.getElementById("btnSave");const btnClear=document.getElementById("btnClear");const bgModal=document.getElementById("bgModal");const bgGrid=document.getElementById("bgGrid");const bgClose=document.getElementById("bgClose");const stickerModal=document.getElementById("stickerModal");const stickerGrid=document.getElementById("stickerGrid");const modalTitle=document.getElementById("modalTitle");const modalClose=document.getElementById("modalClose");const textModal=document.getElementById("textModal");const textMask=document.getElementById("textMask");const textInput=document.getElementById("textInput");const textOk=document.getElementById("textOk");const textToggle=document.getElementById("textToggle");const textRand=document.getElementById("textRand");const exportModal=document.getElementById("exportModal");const exportMask=document.getElementById("exportMask");const exportImg=document.getElementById("exportImg");const exportOpen=document.getElementById("exportOpen");const exportClose=document.getElementById("exportClose");const drawActions=document.getElementById("drawActions");const previewWrap=document.querySelector(".preview-wrap");const collageLayout=document.querySelector(".collage-layout");const sideMenu=document.querySelector(".side-menu");const bgPreview=document.getElementById("bgPreview");let captionsData=null;let activeTextItem=null;
 let activeTextDraftTheme=null;
-let exportUrl=null;
-const EXPORT_NAME="jieqi-720x1280.jpg";
+let exportUrl = null;
+let downloadUrl = null;
+const EXPORT_NAME = "jieqi-720x1280.jpg";
 
-function openExportModal(url){
-  if(!exportModal||!exportImg)return false;
-  if(exportUrl&&String(exportUrl).startsWith("blob:")){try{URL.revokeObjectURL(exportUrl)}catch(e){}}
-  exportUrl=url;
-  exportImg.src=url;
-  if(exportOpen){exportOpen.href=url;exportOpen.download=EXPORT_NAME}
+function openExportModal(pUrl, dUrl) {
+  if (!exportModal || !exportImg) return false;
+  
+  // 清理之前的 URL
+  if (exportUrl && String(exportUrl).startsWith("blob:")) {
+    try { URL.revokeObjectURL(exportUrl); } catch (e) {}
+  }
+  if (downloadUrl && String(downloadUrl).startsWith("blob:")) {
+    try { URL.revokeObjectURL(downloadUrl); } catch (e) {}
+  }
+
+  exportUrl = pUrl;
+  downloadUrl = dUrl || pUrl; // 如果没提供下载 URL，则使用预览 URL
+
+  exportImg.src = exportUrl;
+  if (exportOpen) {
+    exportOpen.href = downloadUrl;
+    exportOpen.download = EXPORT_NAME;
+  }
+  
   exportModal.classList.remove("hidden");
-  exportModal.setAttribute("aria-hidden","false");
-  return true
+  exportModal.setAttribute("aria-hidden", "false");
+  return true;
 }
-function closeExportModal(){
-  if(!exportModal)return;
+
+function closeExportModal() {
+  if (!exportModal) return;
   exportModal.classList.add("hidden");
-  exportModal.setAttribute("aria-hidden","true");
-  if(exportImg)exportImg.removeAttribute("src");
-  if(exportOpen)exportOpen.removeAttribute("href");
-  if(exportUrl&&String(exportUrl).startsWith("blob:")){try{URL.revokeObjectURL(exportUrl)}catch(e){}}
-  exportUrl=null
+  exportModal.setAttribute("aria-hidden", "true");
+  if (exportImg) exportImg.removeAttribute("src");
+  if (exportOpen) exportOpen.removeAttribute("href");
+  
+  if (exportUrl && String(exportUrl).startsWith("blob:")) {
+    try { URL.revokeObjectURL(exportUrl); } catch (e) {}
+  }
+  if (downloadUrl && String(downloadUrl).startsWith("blob:")) {
+    try { URL.revokeObjectURL(downloadUrl); } catch (e) {}
+  }
+  exportUrl = null;
+  downloadUrl = null;
 }
 if(exportMask)exportMask.addEventListener("click",closeExportModal);
 if(exportClose)exportClose.addEventListener("click",closeExportModal);
@@ -41,7 +64,7 @@ const backgrounds=[
 "./assets/backgrounds/bg4.jpg",
 "./assets/backgrounds/bg5.jpg",
 "./assets/backgrounds/bg6.jpg"
-];const MAX_STICKERS=10;const CACHE_TAG=Date.now();const bust=u=>u+(u.includes("?")?"&":"?")+"v="+CACHE_TAG;let state={bg:backgrounds[0],items:[]};fetch(bust("./assets/copy/captions.json")).then(r=>r.ok?r.json():null).then(j=>{if(j)captionsData=j}).catch(()=>{});
+];const MAX_STICKERS=10;const CACHE_TAG=Date.now();const bust=u=>u+(u.includes("?")?"&":"?")+"v="+CACHE_TAG;let state = { bg: backgrounds[0], items: [], textEditCount: 0 };fetch(bust("./assets/copy/captions.json")).then(r=>r.ok?r.json():null).then(j=>{if(j)captionsData=j}).catch(()=>{});
 if('ontouchstart' in window || navigator.maxTouchPoints > 0) document.body.classList.add('is-touch');
 
 function clearSelections(){state.items.forEach(it=>{it.el.classList.remove("selected");const h=it.el.querySelector(".handles");if(h)h.style.display="none"})}
@@ -180,10 +203,13 @@ function syncTextEditorUI(){
   applyTextPreviewToEl(activeTextItem,textInput.value,theme);
 }
 function openTextEditor(item,focus){activeTextItem=item;textModal.classList.remove("hidden");textModal.setAttribute("aria-hidden","false");textInput.value=item.text||"";setActiveButton(btnText);syncTextEditorUI();if(focus){setTimeout(()=>{textInput.focus();textInput.setSelectionRange(textInput.value.length,textInput.value.length)},50)}}
-function closeTextEditor(commit){
-  if(activeTextItem&&!commit){
-    applyThemeToItem(activeTextItem,activeTextItem.theme||"dark");
-    applyTextToItem(activeTextItem,activeTextItem.text||"");
+function closeTextEditor(commit) {
+  if (activeTextItem && !commit) {
+    applyThemeToItem(activeTextItem, activeTextItem.theme || "dark");
+    applyTextToItem(activeTextItem, activeTextItem.text || "");
+  }
+  if (commit) {
+    state.textEditCount = (state.textEditCount || 0) + 1;
   }
   textModal.classList.add("hidden");
   textModal.setAttribute("aria-hidden","true");
@@ -217,8 +243,196 @@ function startMouse(e){if(e.target&&e.target.closest(".handle"))return;e.prevent
 function moveMouse(e){if(!item.dragging)return;const dx=e.clientX-item._mx;const dy=e.clientY-item._my;if(Math.abs(dx)>2||Math.abs(dy)>2)moved=true;item.x+=dx;item.y+=dy;item._mx=e.clientX;item._my=e.clientY;apply()}
 function endMouse(){if(draggingHandle)return; if(item.dragging){item.dragging=false;if(outOfBounds()){deleteItem()}}}
 item.el.addEventListener("touchstart",startTouch,{passive:false});item.el.addEventListener("touchmove",moveTouch,{passive:false});item.el.addEventListener("touchend",endTouch,{passive:false});item.el.addEventListener("mousedown",startMouse);item.el.addEventListener("click",e=>{if(document.body.classList.contains("is-touch"))return;if(moved)return;sel(true);if(item.type==="text"){const now=Date.now();if(now-item.lastTap<350){openTextEditor(item,true);item.lastTap=0;return}item.lastTap=now;return}if(!handles)addHandles()});document.addEventListener("mousemove",moveMouse);document.addEventListener("mouseup",endMouse);apply()}
-btnClear.addEventListener("click",()=>{btnClear.classList.add("flash");setTimeout(()=>btnClear.classList.remove("flash"),200);state.items.forEach(i=>i.el.remove());state.items=[];render();updateStickerControls()});
+btnClear.addEventListener("click", () => {
+  btnClear.classList.add("flash");
+  setTimeout(() => btnClear.classList.remove("flash"), 200);
+  state.items.forEach((i) => i.el.remove());
+  state.items = [];
+  state.textEditCount = 0;
+  render();
+  updateStickerControls();
+});
 stickerLayer.addEventListener("mousedown",e=>{if(e.target===stickerLayer){clearSelections()}});
-function saveImage(){const BASE_W=720,BASE_H=1280;const off=document.createElement("canvas");off.width=BASE_W;off.height=BASE_H;const octx=off.getContext("2d");function rr(x,y,w,h,r){octx.beginPath();octx.moveTo(x+r,y);octx.arcTo(x+w,y,x+w,y+h,r);octx.arcTo(x+w,y+h,x,y+h,r);octx.arcTo(x,y+h,x,y,r);octx.arcTo(x,y,x+w,y,r);octx.closePath()}function wrap(text,maxW){const parts=String(text||"").split("\n");const out=[];for(let p=0;p<parts.length;p++){let line="";for(let k=0;k<parts[p].length;k++){const test=line+parts[p][k];if(octx.measureText(test).width>maxW&&line){out.push(line);line=parts[p][k]}else line=test}out.push(line)}return out}function drawBg(next){if(state.bg){const bg=new Image();bg.src=bust(state.bg);bg.onload=()=>{octx.drawImage(bg,0,0,BASE_W,BASE_H);next()};bg.onerror=next}else next()}function drawItemAt(idx){if(idx>=state.items.length)return finish();const i=state.items[idx];const type=i.type||"img";const cRect=canvas.getBoundingClientRect();const sx=BASE_W/cRect.width;const sy=BASE_H/cRect.height;const r=i.el.getBoundingClientRect();const centerX=r.left+r.width/2;const centerY=r.top+r.height/2;const cx=(centerX-cRect.left)*sx;const cy=(centerY-cRect.top)*sy;const w=r.width*sx;const h=r.height*sy;if(type==="text"){const text=(i.text||"").trim();if(!text){drawItemAt(idx+1);return}const baseW=i.baseW||220;const scaleW=r.width/baseW;const fontSize=(i.fontSize||22)*scaleW*sx;const pad=(i.pad||12)*scaleW*sx;const radius=14*scaleW*sx;octx.save();octx.translate(cx,cy);octx.rotate(i.rot);if(i.theme==="light"){octx.fillStyle="#a7d07a";rr(-w/2,-h/2,w,h,Math.min(radius,Math.min(w,h)/2));octx.fill()}octx.fillStyle=i.theme==="light"?"#fff":"#1e5e35";octx.textBaseline="alphabetic";octx.font=`700 ${fontSize}px \"Songti SC\",\"SimSun\",\"Noto Serif SC\",serif`;octx.textAlign=i.align==="right"?"right":"center";const maxW=w-2*pad;const lines=wrap(text,Math.max(10,maxW));const lh=fontSize*1.25;const total=lines.length*lh;let y=-total/2+lh*0.9;for(let li=0;li<lines.length;li++){const x=i.align==="right"?w/2-pad:0;octx.fillText(lines[li],x,y);y+=lh}octx.restore();drawItemAt(idx+1);return}const img=new Image();img.src=bust(i.src||"");img.onload=()=>{octx.save();octx.translate(cx,cy);octx.rotate(i.rot);octx.drawImage(img,-w/2,-h/2,w,h);octx.restore();drawItemAt(idx+1)};img.onerror=()=>drawItemAt(idx+1)}function finish(){const show=url=>{if(!openExportModal(url)){const a=document.createElement("a");a.href=url;a.download=EXPORT_NAME;document.body.appendChild(a);a.click();a.remove()}};if(off.toBlob){off.toBlob(b=>{if(b){show(URL.createObjectURL(b));return}show(off.toDataURL("image/jpeg",0.92))},"image/jpeg",0.92)}else{show(off.toDataURL("image/jpeg",0.92))}}drawBg(()=>drawItemAt(0))}
+function getTitleRule() {
+  const rules = [];
+  const stickers = state.items.filter((i) => (i.type || "img") === "img");
+  const texts = state.items.filter((i) => i.type === "text");
+  if (stickers.length === 10) rules.push(1);
+  const catCount = stickers.filter((i) => {
+    const s = i.src || "";
+    const m = s.match(/campus-(\d+)\.svg/);
+    if (m) {
+      const id = parseInt(m[1]);
+      return id === 7 || id === 8 || id === 9;
+    }
+    return false;
+  }).length;
+  if (catCount >= 4) rules.push(2);
+    const xiaSunCount = stickers.filter((i) => {
+      const s = i.src || "";
+      const m = s.match(/campus-(\d+)\.svg/);
+      if (m) {
+        const id = parseInt(m[1]);
+        return id === 2 || id === 3 || id === 4;
+      }
+      return false;
+    }).length;
+    if (xiaSunCount >= 3) rules.push(3);
+    if (state.textEditCount >= 3) rules.push(4);
+    const jieqiCount = stickers.filter((i) =>
+      (i.src || "").includes("jieqi-"),
+    ).length;
+    if (jieqiCount >= 3) rules.push(5);
+    const layoutCount = stickers.filter((i) =>
+      (i.src || "").includes("text-"),
+    ).length;
+    if (layoutCount >= 3) rules.push(6);
+    const campusCount = stickers.filter((i) =>
+      (i.src || "").includes("campus-"),
+    ).length;
+    if (campusCount >= 4) rules.push(7);
+  const hasJieqi = stickers.some((i) => (i.src || "").includes("jieqi-"));
+  const hasCampus = stickers.some((i) => (i.src || "").includes("campus-"));
+  const hasTextSticker = stickers.some((i) => (i.src || "").includes("text-"));
+  if (hasJieqi && hasCampus && hasTextSticker) rules.push(8);
+  return rules;
+}
+function saveImage() {
+  const BASE_W = 720,
+    BASE_H = 1280;
+  const off = document.createElement("canvas");
+  off.width = BASE_W;
+  off.height = BASE_H;
+  const octx = off.getContext("2d");
+  function rr(x, y, w, h, r) {
+    octx.beginPath();
+    octx.moveTo(x + r, y);
+    octx.arcTo(x + w, y, x + w, y + h, r);
+    octx.arcTo(x + w, y + h, x, y + h, r);
+    octx.arcTo(x, y + h, x, y, r);
+    octx.arcTo(x, y, x + w, y, r);
+    octx.closePath();
+  }
+  function wrap(text, maxW) {
+    const parts = String(text || "").split("\n");
+    const out = [];
+    for (let p = 0; p < parts.length; p++) {
+      let line = "";
+      for (let k = 0; k < parts[p].length; k++) {
+        const test = line + parts[p][k];
+        if (octx.measureText(test).width > maxW && line) {
+          out.push(line);
+          line = parts[p][k];
+        } else line = test;
+      }
+      out.push(line);
+    }
+    return out;
+  }
+  function drawBg(next) {
+    if (state.bg) {
+      const bg = new Image();
+      bg.src = bust(state.bg);
+      bg.onload = () => {
+        octx.drawImage(bg, 0, 0, BASE_W, BASE_H);
+        next();
+      };
+      bg.onerror = next;
+    } else next();
+  }
+  function drawItemAt(idx) {
+    if (idx >= state.items.length) {
+      // 步骤 1: 此时所有元素已画完，获取“干净”的下载图
+      const dUrl = off.toDataURL("image/jpeg", 0.92);
+      
+      // 步骤 2: 绘制 Title
+      drawTitle(() => {
+        // 步骤 3: 此时 Title 已画完，获取“带 Title”的预览图
+        const pUrl = off.toDataURL("image/jpeg", 0.92);
+        
+        // 步骤 4: 弹出模态框，预览用 pUrl，下载用 dUrl
+        openExportModal(pUrl, dUrl);
+      });
+      return;
+    }
+    const i = state.items[idx];
+    const type = i.type || "img";
+    const cRect = canvas.getBoundingClientRect();
+    const sx = BASE_W / cRect.width;
+    const sy = BASE_H / cRect.height;
+    const r = i.el.getBoundingClientRect();
+    const centerX = r.left + r.width / 2;
+    const centerY = r.top + r.height / 2;
+    const cx = (centerX - cRect.left) * sx;
+    const cy = (centerY - cRect.top) * sy;
+    const w = r.width * sx;
+    const h = r.height * sy;
+    if (type === "text") {
+      const text = (i.text || "").trim();
+      if (!text) {
+        drawItemAt(idx + 1);
+        return;
+      }
+      const baseW = i.baseW || 220;
+      const scaleW = r.width / baseW;
+      const fontSize = (i.fontSize || 22) * scaleW * sx;
+      const pad = (i.pad || 12) * scaleW * sx;
+      const radius = 14 * scaleW * sx;
+      octx.save();
+      octx.translate(cx, cy);
+      octx.rotate(i.rot);
+      if (i.theme === "light") {
+        octx.fillStyle = "#a7d07a";
+        rr(-w / 2, -h / 2, w, h, Math.min(radius, Math.min(w, h) / 2));
+        octx.fill();
+      }
+      octx.fillStyle = i.theme === "light" ? "#fff" : "#1e5e35";
+      octx.textBaseline = "alphabetic";
+      octx.font = `700 ${fontSize}px "Songti SC","SimSun","Noto Serif SC",serif`;
+      octx.textAlign = i.align === "right" ? "right" : "center";
+      const maxW = w - 2 * pad;
+      const lines = wrap(text, Math.max(10, maxW));
+      const lh = fontSize * 1.25;
+      const total = lines.length * lh;
+      let y = -total / 2 + lh * 0.9;
+      for (let li = 0; li < lines.length; li++) {
+        const x = i.align === "right" ? w / 2 - pad : 0;
+        octx.fillText(lines[li], x, y);
+        y += lh;
+      }
+      octx.restore();
+      drawItemAt(idx + 1);
+      return;
+    }
+    const img = new Image();
+    img.src = bust(i.src || "");
+    img.onload = () => {
+      octx.save();
+      octx.translate(cx, cy);
+      octx.rotate(i.rot);
+      octx.drawImage(img, -w / 2, -h / 2, w, h);
+      octx.restore();
+      drawItemAt(idx + 1);
+    };
+    img.onerror = () => drawItemAt(idx + 1);
+  }
+  function drawTitle(next) {
+      const rules = getTitleRule();
+      if (rules.length === 0) return next();
+      const rule = rules[Math.floor(Math.random() * rules.length)];
+      const img = new Image();
+      img.src = bust(`./assets/title/title-${rule}.svg`);
+      img.onload = () => {
+        const tw = 320, // 480 / 1.5 = 320
+          th = 320;
+        // 修改为左下角，对应用户截图中的红框位置
+        octx.drawImage(img, 12, BASE_H - th - 12, tw, th);
+        next();
+      };
+      img.onerror = next;
+    }
+    drawBg(() => drawItemAt(0));
+  }
+
 btnSave.addEventListener("click",saveImage);
 function showActions(){drawActions.classList.add("show")}
