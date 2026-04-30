@@ -263,12 +263,14 @@ function getTitleRule() {
     const m = s.match(/campus-(\d+)\.svg/);
     if (m) {
       const id = parseInt(m[1]);
-      return id === 7 || id === 8 || id === 9;
+      console.log("Cat sticker candidate - src:", s, "id:", id); // 添加日志
+      return id === 8 || id === 9 || id === 10; // 更新为 8, 9, 10
     }
     return false;
   }).length;
-  if (catCount >= 4) rules.push(2);
-    const xiaSunCount = stickers.filter((i) => {
+  if (catCount >= 3) rules.push(2);
+  console.log("catCount:", catCount, "rules after catCount:", rules);
+  const xiaSunCount = stickers.filter((i) => {
       const s = i.src || "";
       const m = s.match(/campus-(\d+)\.svg/);
       if (m) {
@@ -291,6 +293,7 @@ function getTitleRule() {
       (i.src || "").includes("campus-"),
     ).length;
     if (campusCount >= 4) rules.push(7);
+    console.log("campusCount:", campusCount, "rules after campusCount:", rules);
   const hasJieqi = stickers.some((i) => (i.src || "").includes("jieqi-"));
   const hasCampus = stickers.some((i) => (i.src || "").includes("campus-"));
   const hasTextSticker = stickers.some((i) => (i.src || "").includes("text-"));
@@ -418,8 +421,10 @@ function saveImage() {
   }
   function drawTitle(next) {
       const rules = getTitleRule();
-      if (rules.length === 0) return next();
-      const rule = rules[Math.floor(Math.random() * rules.length)];
+      console.log("Final rules array:", rules);
+  if (rules.length === 0) return next();
+  const rule = rules[Math.floor(Math.random() * rules.length)];
+  console.log("Selected rule:", rule);
       const img = new Image();
       img.src = bust(`./assets/title/title-${rule}.svg`);
       img.onload = () => {
