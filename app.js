@@ -5,7 +5,7 @@ const terms=[{key:"春分",month:3,day:20},{key:"清明",month:4,day:4}];const f
 function randomFortune(){const t=currentTerm();const pool=fortunes[t]||fortunes["春分"];return pool[Math.floor(Math.random()*pool.length)]}
 function randomLotSrc(){const n=Math.floor(Math.random()*6)+1;return `./assets/lots/lots-${n}.svg`}
 function playShakeThenDraw(){tapHint.classList.add("hide");sticks.classList.add("shake-once");tube.classList.add("shake-once");setTimeout(()=>{sticks.classList.remove("shake-once");tube.classList.remove("shake-once");drawFortune()},1000)}
-function drawFortune(){const img=document.getElementById("fortuneImg");const src=bust(randomLotSrc());img.src=src;img.style.transform='scale(1.2)';fortuneTitle.style.display="none";fortuneGrade.style.display="none";fortuneText.style.display="none";fortuneCard.classList.remove("show");fortuneCard.style.zIndex="5";void fortuneCard.offsetWidth;fortuneCard.classList.add("show");showActions()}
+function drawFortune(){const img=document.getElementById("fortuneImg");const src=bust(randomLotSrc());img.src=src;fortuneTitle.style.display="none";fortuneGrade.style.display="none";fortuneText.style.display="none";fortuneCard.classList.remove("show");fortuneCard.style.zIndex="5";void fortuneCard.offsetWidth;fortuneCard.classList.add("show");showActions()}
 let canTapToDraw=true;function onAreaTap(){if(!canTapToDraw)return;canTapToDraw=false;playShakeThenDraw()}document.getElementById("lotteryArea").addEventListener("click",onAreaTap);btnRetry.addEventListener("click",()=>{fortuneCard.classList.remove("show");setTimeout(playShakeThenDraw,50)});btnAccept.addEventListener("click",()=>{showPanel("view-collage")});
 if(window.DeviceMotionEvent){let last=0;window.addEventListener("devicemotion",e=>{if(!canTapToDraw)return;const a=e.accelerationIncludingGravity;if(!a)return;const mag=Math.abs(a.x)+Math.abs(a.y)+Math.abs(a.z);const now=Date.now();if(mag>30&&now-last>1500){last=now;canTapToDraw=false;playShakeThenDraw()}},false)}
 const canvas=document.getElementById("collageCanvas");const ctx=canvas.getContext("2d");const stickerLayer=document.getElementById("stickerLayer");const limitTip=document.getElementById("limitTip");const btnBg=document.getElementById("btnBg");const btnStickerNature=document.getElementById("btnStickerNature");const btnStickerXiaSun=document.getElementById("btnStickerXiaSun");const btnStickerLayout=document.getElementById("btnStickerLayout");const btnText=document.getElementById("btnText");const btnSave=document.getElementById("btnSave");const btnClear=document.getElementById("btnClear");const bgModal=document.getElementById("bgModal");const bgGrid=document.getElementById("bgGrid");const bgClose=document.getElementById("bgClose");const stickerModal=document.getElementById("stickerModal");const stickerGrid=document.getElementById("stickerGrid");const modalTitle=document.getElementById("modalTitle");const modalClose=document.getElementById("modalClose");const textModal=document.getElementById("textModal");const textMask=document.getElementById("textMask");const textInput=document.getElementById("textInput");const textOk=document.getElementById("textOk");const textToggle=document.getElementById("textToggle");const textRand=document.getElementById("textRand");const exportModal=document.getElementById("exportModal");const exportMask=document.getElementById("exportMask");const exportImg=document.getElementById("exportImg");const exportOpen=document.getElementById("exportOpen");const exportClose=document.getElementById("exportClose");const drawActions=document.getElementById("drawActions");const previewWrap=document.querySelector(".preview-wrap");const collageLayout=document.querySelector(".collage-layout");const sideMenu=document.querySelector(".side-menu");const bgPreview=document.getElementById("bgPreview");let captionsData=null;let activeTextItem=null;
@@ -258,42 +258,39 @@ function getTitleRule() {
   const stickers = state.items.filter((i) => (i.type || "img") === "img");
   const texts = state.items.filter((i) => i.type === "text");
   if (stickers.length === 10) rules.push(1);
+
   const catCount = stickers.filter((i) => {
     const s = i.src || "";
     const m = s.match(/campus-(\d+)\.svg/);
     if (m) {
       const id = parseInt(m[1]);
-      console.log("Cat sticker candidate - src:", s, "id:", id); // 添加日志
-      return id === 8 || id === 9 || id === 10; // 更新为 8, 9, 10
+      return id === 8 || id === 9 || id === 10;
     }
     return false;
   }).length;
   if (catCount >= 3) rules.push(2);
-  console.log("catCount:", catCount, "rules after catCount:", rules);
+
   const xiaSunCount = stickers.filter((i) => {
-      const s = i.src || "";
-      const m = s.match(/campus-(\d+)\.svg/);
-      if (m) {
-        const id = parseInt(m[1]);
-        return id === 2 || id === 3 || id === 4;
-      }
-      return false;
-    }).length;
-    if (xiaSunCount >= 3) rules.push(3);
-    if (state.textEditCount >= 3) rules.push(4);
-    const jieqiCount = stickers.filter((i) =>
-      (i.src || "").includes("jieqi-"),
-    ).length;
-    if (jieqiCount >= 3) rules.push(5);
-    const layoutCount = stickers.filter((i) =>
-      (i.src || "").includes("text-"),
-    ).length;
-    if (layoutCount >= 3) rules.push(6);
-    const campusCount = stickers.filter((i) =>
-      (i.src || "").includes("campus-"),
-    ).length;
-    if (campusCount >= 4) rules.push(7);
-    console.log("campusCount:", campusCount, "rules after campusCount:", rules);
+    const s = i.src || "";
+    const m = s.match(/campus-(\d+)\.svg/);
+    if (m) {
+      const id = parseInt(m[1]);
+      return id === 2 || id === 3 || id === 4;
+    }
+    return false;
+  }).length;
+  if (xiaSunCount >= 3) rules.push(3);
+  if (state.textEditCount >= 3) rules.push(4);
+
+  const jieqiCount = stickers.filter((i) => (i.src || "").includes("jieqi-")).length;
+  if (jieqiCount >= 3) rules.push(5);
+
+  const layoutCount = stickers.filter((i) => (i.src || "").includes("text-")).length;
+  if (layoutCount >= 3) rules.push(6);
+
+  const campusCount = stickers.filter((i) => (i.src || "").includes("campus-")).length;
+  if (campusCount >= 4) rules.push(7);
+
   const hasJieqi = stickers.some((i) => (i.src || "").includes("jieqi-"));
   const hasCampus = stickers.some((i) => (i.src || "").includes("campus-"));
   const hasTextSticker = stickers.some((i) => (i.src || "").includes("text-"));
@@ -420,24 +417,21 @@ function saveImage() {
     img.onerror = () => drawItemAt(idx + 1);
   }
   function drawTitle(next) {
-      const rules = getTitleRule();
-      console.log("Final rules array:", rules);
-  if (rules.length === 0) return next();
-  const rule = rules[Math.floor(Math.random() * rules.length)];
-  console.log("Selected rule:", rule);
-      const img = new Image();
-      img.src = bust(`./assets/title/title-${rule}.svg`);
-      img.onload = () => {
-        const tw = 320, // 480 / 1.5 = 320
-          th = 320;
-        // 修改为左下角，对应用户截图中的红框位置
-        octx.drawImage(img, 12, BASE_H - th - 12, tw, th);
-        next();
-      };
-      img.onerror = next;
-    }
-    drawBg(() => drawItemAt(0));
+    const rules = getTitleRule();
+    if (rules.length === 0) return next();
+    const rule = rules[Math.floor(Math.random() * rules.length)];
+    const img = new Image();
+    img.src = bust(`./assets/title/title-${rule}.svg`);
+    img.onload = () => {
+      const tw = 320,
+        th = 320;
+      octx.drawImage(img, 12, BASE_H - th - 12, tw, th);
+      next();
+    };
+    img.onerror = next;
   }
+  drawBg(() => drawItemAt(0));
+}
 
 btnSave.addEventListener("click",saveImage);
 function showActions(){drawActions.classList.add("show")}
