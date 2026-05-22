@@ -17,7 +17,7 @@ button,.btn,.menu-btn{color:#2b2b2b !important}
 .tabbar{display:none}
 .hamburger-btn{position:fixed;left:12px;top:12px;border:0;background:rgba(255,255,255,.6);backdrop-filter:blur(14px);border-radius:14px;padding:10px 12px;z-index:1000;box-shadow:0 6px 18px rgba(0,0,0,.18), inset 0 0 10px rgba(255,255,255,.8)}
 .draw-container{padding:12px}
-.lottery-area{--fortune-scale:2.5;--fortune-x:30px;position:relative;height:520px;border-radius:18px;background:rgba(255,255,255,.35);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.lottery-area{--fortune-scale:1.4;--fortune-x:5px;position:relative;height:520px;border-radius:18px;background:rgba(255,255,255,.35);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .draw-container.soft{border-radius:18px}
 .lottery-tube{position:absolute;bottom:40px;display:flex;align-items:center;justify-content:center;z-index:2}
 .tube-svg{width:200px;height:auto;filter:drop-shadow(0 4px 8px rgba(0,0,0,.15))}
